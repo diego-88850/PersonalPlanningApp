@@ -6,27 +6,27 @@ test "bridge failures map to distinct exit codes and hints" {
     with redirect_stderr(buf) {
         assert explain_bridge_error(
             BridgeUnavailable(
-                app="web", name="docs_status", detail="connection refused"
+                app="web", name="ping", detail="connection refused"
             )
         )
             == EXIT_UNAVAILABLE;
-        assert explain_bridge_error(BridgeTimeout(app="social_graph", name="load_feed"))
+        assert explain_bridge_error(BridgeTimeout(app="server", name="ping"))
             == EXIT_TIMEOUT;
         assert explain_bridge_error(
-            BridgeRejected(app="social_graph", name="create_tweet", detail="401")
+            BridgeRejected(app="server", name="ping", detail="401")
         )
             == EXIT_REJECTED;
         assert explain_bridge_error(
-            BridgeError(app="web", name="docs_sync_tick", detail="500")
+            BridgeError(app="web", name="ping", detail="500")
         )
             == EXIT_FAILURE;
     }
     text = buf.getvalue();
-    assert "web.docs_status is not reachable (connection refused)" in text;
+    assert "web.ping is not reachable (connection refused)" in text;
     assert START_HINT in text;
-    assert "social_graph.load_feed timed out" in text;
+    assert "server.ping timed out" in text;
     assert "signed-in identity" in text;
-    assert "web.docs_sync_tick failed (500)" in text;
+    assert "web.ping failed (500)" in text;
 }
 
 test "exit codes are distinct" {

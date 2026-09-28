@@ -1,3 +1,8 @@
+import from "@jac/mobui" { View, Text }
+
 def:pub app -> JsxElement {
-    return <JacYacMobile/>;
+    return
+        <View>
+            <Text>Upkeep</Text>
+        </View>;
 }

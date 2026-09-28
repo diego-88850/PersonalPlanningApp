@@ -44,6 +44,6 @@ with entry {
         ":root{" + css(light_palette()) + "}\n.dark{" + css(dark_palette()) + "}\n",
         encoding="utf-8"
     );
-    logo = dest.parent.parent / "assets" / "jacyak-logo.svg";
+    logo = dest.parent.parent / "assets" / "upkeep-logo.svg";
     logo.write_text(logo_xml(), encoding="utf-8");
 }
