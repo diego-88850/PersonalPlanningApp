@@ -4,7 +4,8 @@
 walker on the server (`core/server.jac`), so the CLI never holds planning logic.
 
 ```bash
-jac run web                 # start the server (terminal 1)
+jac run web                 # start the server (terminal 1), port 8001
+export JAC_APP_SERVER_URL=http://localhost:8001/api/server
 jac run cli -- ping         # terminal 2; everything after -- is the CLI's argv
 jac test cli
 ```

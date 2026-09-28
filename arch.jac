@@ -73,5 +73,15 @@ impl import cli.commands {
 }
 
 impl import core {
+    rules --> core.server {
+        GOAL_KINDS,
+        NAME_LIMIT,
+        STATUSES,
+        completion_pct,
+        streaks,
+        valid_day,
+        valid_name,
+        week_so_far
+    }
     server --> cli.main { ping }
 }
