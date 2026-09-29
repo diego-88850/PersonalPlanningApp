@@ -19,14 +19,22 @@ def warn(text: str) {
     sys.stderr.write(text + "\n");
 }
 
+def say(text: str) {
+    sys.stdout.write(text + "\n");
+}
+
 def _suffix(detail: str) -> str {
     return " (" + detail + ")" if detail else "";
 }
 
 def explain_bridge_error(e: BridgeError) -> int {
     where = e.app + "." + e.name;
-    if isinstance(e, BridgeUnavailable) {
-        warn("upkeep: " + where + " is not reachable" + _suffix(e.detail));
+    refused = "Connect call failed" in e.detail;
+    if isinstance(e, BridgeUnavailable) or refused {
+        warn(
+            "upkeep: " + where + " is not reachable"
+            + ("" if refused else _suffix(e.detail))
+        );
         warn(START_HINT);
         return EXIT_UNAVAILABLE;
     }
@@ -34,9 +42,9 @@ def explain_bridge_error(e: BridgeError) -> int {
         warn("upkeep: " + where + " timed out" + _suffix(e.detail));
         return EXIT_TIMEOUT;
     }
-    if isinstance(e, BridgeRejected) {
-        warn("upkeep: " + where + " rejected the call" + _suffix(e.detail));
-        warn("hint: the server wants a signed-in identity for this command");
+    if isinstance(e, BridgeRejected) or "401" in e.detail {
+        warn("upkeep: " + where + " rejected the call (not signed in?)");
+        warn("hint: sign in with `login <username>` (or `register <username>` first)");
         return EXIT_REJECTED;
     }
     warn("upkeep: " + where + " failed" + _suffix(e.detail));

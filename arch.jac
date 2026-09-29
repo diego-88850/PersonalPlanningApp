@@ -4,7 +4,7 @@ impl import {
     edge WebInternal: web.* --> web.*;
     edge MobileInternal: mobile.* --> mobile.*;
     edge CliInternal: cli.* --> cli.*;
-    edge BridgeFunnel: jaclang.server.bridge --> cli.main | cli.commands.*;
+    edge BridgeFunnel: jaclang.server | jaclang.server.bridge --> cli.main | cli.commands.*;
 }
 
 impl import core {
@@ -69,7 +69,17 @@ impl import core.site.ui {
 }
 
 impl import cli.commands {
-    common --> cli.main { EXIT_OK, EXIT_USAGE, explain_bridge_error, warn }
+    auth --> cli.main { apply_auth, run_login, run_logout, run_register }
+    common --> cli.commands.auth | cli.commands.plan { EXIT_FAILURE, EXIT_OK, say, warn }
+    common --> cli.main { EXIT_OK, EXIT_USAGE, explain_bridge_error, say, warn }
+    plan --> cli.main {
+        run_add_habit,
+        run_add_job,
+        run_check,
+        run_log_workout,
+        run_today,
+        today_str
+    }
 }
 
 impl import core {
@@ -82,6 +92,19 @@ impl import core {
         valid_day,
         valid_name,
         week_so_far
+    }
+    server --> cli.commands.plan {
+        GoalView,
+        HabitView,
+        Result,
+        Today,
+        WorkoutView,
+        add_application,
+        add_habit,
+        get_today,
+        list_habits,
+        log_workout,
+        set_check
     }
     server --> cli.main { ping }
 }

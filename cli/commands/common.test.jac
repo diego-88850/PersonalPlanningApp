@@ -25,7 +25,7 @@ test "bridge failures map to distinct exit codes and hints" {
     assert "web.ping is not reachable (connection refused)" in text;
     assert START_HINT in text;
     assert "server.ping timed out" in text;
-    assert "signed-in identity" in text;
+    assert "sign in with `login" in text;
     assert "web.ping failed (500)" in text;
 }
 
@@ -39,4 +39,29 @@ test "exit codes are distinct" {
         EXIT_REJECTED
     ];
     assert len(set(codes)) == len(codes);
+}
+
+test "an HTTP 401 behind a generic bridge error counts as rejected" {
+    buf = io.StringIO();
+    with redirect_stderr(buf) {
+        assert explain_bridge_error(
+            BridgeError(app="server", name="get_today", detail="HTTP 401: Unauthorized")
+        )
+            == EXIT_REJECTED;
+    }
+    assert "sign in with `login" in buf.getvalue();
+}
+
+test "a refused connection counts as unreachable without the raw dump" {
+    buf = io.StringIO();
+    with redirect_stderr(buf) {
+        assert explain_bridge_error(
+            BridgeError(app="server", name="ping", detail="localhost:8001: Connect call failed")
+        )
+            == EXIT_UNAVAILABLE;
+    }
+    text = buf.getvalue();
+    assert "server.ping is not reachable" in text;
+    assert START_HINT in text;
+    assert "Connect call failed" not in text;
 }

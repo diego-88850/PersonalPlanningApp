@@ -85,14 +85,15 @@ Then open the URL printed in the terminal (TODO(verify): usually
 
 ## Using the CLI
 
-With the server running:
+With the server running (see `cli/README.md` for details):
 
 ```bash
-# TODO(verify): replace with real command names and flags
-upkeep add-job "Company" "Position"        # add an application (status: Applied)
-upkeep log-workout "Bench 3x8, rows 3x10"  # log today's gym session
-upkeep check meds                          # check off a habit for today
-upkeep today                               # print today's plan and progress
+jac run cli -- register diego                         # first time only; later: login diego
+jac run cli -- add-habit meds                         # add a habit
+jac run cli -- check meds                             # check it off for today
+jac run cli -- log-workout "Legs" --details "squat 3x5"
+jac run cli -- add-job "Company" "Position"           # add an application (status: Applied)
+jac run cli -- today                                  # print today's plan and progress
 ```
 
 ## What Makes This Project Stand Out
