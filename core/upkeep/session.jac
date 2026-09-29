@@ -105,7 +105,3 @@ def:pub useSession -> Session {
         logout=logout
     );
 }
-
-def:pub stored_username -> str {
-    return __getLocalStorage("upkeep_username") or "";
-}

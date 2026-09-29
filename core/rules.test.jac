@@ -6,13 +6,6 @@ test "valid_day accepts only ISO dates" {
     assert not valid_day("");
 }
 
-test "valid_name trims and bounds" {
-    assert valid_name("meds");
-    assert not valid_name("   ");
-    assert not valid_name("x" * 81);
-    assert valid_name("x" * 80);
-}
-
 test "week_so_far runs Monday through the given day" {
     assert week_so_far("2026-10-05") == ["2026-10-05"];
     assert week_so_far("2026-10-07") == ["2026-10-05", "2026-10-06", "2026-10-07"];

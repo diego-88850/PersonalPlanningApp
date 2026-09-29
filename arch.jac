@@ -44,7 +44,10 @@ impl import core.brand {
 }
 
 impl import core.upkeep {
+    dates --> core.upkeep.state { local_today, shift_day }
     registration --> core.upkeep.session { register_with_challenge }
+    session --> core.upkeep.state { Session, useSession }
+    state --> core.site.planner.Planner | mobile.main { useUpkeep }
 }
 
 impl import core.upkeep.native {
@@ -83,16 +86,9 @@ impl import cli.commands {
 }
 
 impl import core {
-    rules --> core.server {
-        GOAL_KINDS,
-        NAME_LIMIT,
-        STATUSES,
-        completion_pct,
-        streaks,
-        valid_day,
-        valid_name,
-        week_so_far
-    }
+    rules --> core.server { completion_pct, streaks, valid_day, week_so_far }
+    validation --> core.server | core.upkeep.state { name_limit, valid_name }
+    validation --> core.server { goal_kinds, statuses }
     server --> cli.commands.plan {
         GoalView,
         HabitView,
@@ -107,4 +103,25 @@ impl import core {
         set_check
     }
     server --> cli.main { ping }
+    server --> core.upkeep.state {
+        ApplicationView,
+        Result,
+        Today,
+        WorkoutView,
+        add_application,
+        add_habit,
+        archive_habit,
+        delete_item,
+        get_today,
+        list_applications,
+        list_workouts,
+        log_workout,
+        set_check,
+        set_goal,
+        update_application
+    }
+}
+
+impl import core.site.planner {
+    Planner --> web.pages.index { Planner }
 }

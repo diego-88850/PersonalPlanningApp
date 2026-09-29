@@ -1,15 +1,5 @@
 import datetime;
 
-glob NAME_LIMIT: int = 80,
-     STATUSES: list[str] = [
-         "Applied",
-         "Online Assessment",
-         "Interview",
-         "Offer",
-         "Rejected"
-     ],
-     GOAL_KINDS: list[str] = ["habit", "workout"];
-
 def valid_day(day: str) -> bool {
     if len(day) != 10 {
         return False;
@@ -20,10 +10,6 @@ def valid_day(day: str) -> bool {
     } except ValueError {
         return False;
     }
-}
-
-def valid_name(name: str) -> bool {
-    return 0 < len(name.strip()) <= NAME_LIMIT;
 }
 
 def week_so_far(day: str) -> list[str] {

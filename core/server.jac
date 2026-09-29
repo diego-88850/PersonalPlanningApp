@@ -136,7 +136,7 @@ def _goal_views(day: str) -> list[GoalView] {
 
 def:protect add_habit(name: str) -> Result {
     if not valid_name(name) {
-        return _fail(f"Habit name must be 1-{NAME_LIMIT} characters");
+        return _fail(f"Habit name must be 1-{name_limit()} characters");
     }
     h = root ++> Habit(name=name.strip());
     return Result(id=jid(h));
@@ -179,7 +179,7 @@ def:protect log_workout(day: str, title: str, details: str = "") -> Result {
         return _fail("Day must be YYYY-MM-DD");
     }
     if not valid_name(title) {
-        return _fail(f"Workout title must be 1-{NAME_LIMIT} characters");
+        return _fail(f"Workout title must be 1-{name_limit()} characters");
     }
     w = root ++> Workout(day=day, title=title.strip(), details=details.strip());
     return Result(id=jid(w));
@@ -196,7 +196,7 @@ def:protect add_application(
     company: str, position: str, applied_on: str, notes: str = ""
 ) -> Result {
     if not valid_name(company) or not valid_name(position) {
-        return _fail(f"Company and position must be 1-{NAME_LIMIT} characters");
+        return _fail(f"Company and position must be 1-{name_limit()} characters");
     }
     if not valid_day(applied_on) {
         return _fail("Date applied must be YYYY-MM-DD");
@@ -204,7 +204,7 @@ def:protect add_application(
     a = root ++> Application(
         company=company.strip(),
         position=position.strip(),
-        status=STATUSES[0],
+        status=statuses()[0],
         applied_on=applied_on,
         notes=notes.strip()
     );
@@ -218,8 +218,8 @@ def:protect update_application(
     if not isinstance(a, Application) {
         return _fail("No such application");
     }
-    if status and status not in STATUSES {
-        return _fail("Status must be one of: " + ", ".join(STATUSES));
+    if status and status not in statuses() {
+        return _fail("Status must be one of: " + ", ".join(statuses()));
     }
     if status {
         a.status = status;
@@ -253,10 +253,10 @@ def:protect set_goal(
     title: str, kind: str, target: int, habit_id: str = ""
 ) -> Result {
     if not valid_name(title) {
-        return _fail(f"Goal title must be 1-{NAME_LIMIT} characters");
+        return _fail(f"Goal title must be 1-{name_limit()} characters");
     }
-    if kind not in GOAL_KINDS {
-        return _fail("Goal kind must be one of: " + ", ".join(GOAL_KINDS));
+    if kind not in goal_kinds() {
+        return _fail("Goal kind must be one of: " + ", ".join(goal_kinds()));
     }
     if not 1 <= target <= 99 {
         return _fail("Goal target must be between 1 and 99");

@@ -41,7 +41,7 @@ phone and in the browser.
 
 ## Prerequisites
 
-- Jac (version: TODO(verify), e.g. the version from the course setup)
+- Jac 0.37.23 (pinned in `jac.toml`)
 - Python TODO(verify) version
 - For mobile: TODO(verify) (e.g. Node.js plus an emulator or the Expo Go app)
 - Recommended: VS Code with the Jac extension
@@ -65,11 +65,12 @@ export [KEY_NAME]=your-key-here
 From the repository root:
 
 ```bash
-jac run
+jac run web
 ```
 
-Then open the URL printed in the terminal (TODO(verify): usually
-`http://localhost:XXXX`). The server and web frontend start together.
+Then open http://localhost:8000. The web frontend is served there and the
+server API on port 8001; both start together. Registration solves a small
+proof-of-work challenge and is rate limited (5 accounts per hour).
 
 ## Using the Mobile App
 
