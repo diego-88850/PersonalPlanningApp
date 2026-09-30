@@ -19,7 +19,8 @@ def:pub Navbar -> JsxElement {
                 className="mx-auto flex h-16 max-w-7xl items-center gap-6 pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8"
             >
                 <Link to="/" className="flex items-center gap-2.5">
-                    <span className="text-lg font-bold tracking-tight">Upkeep</span>
+                    <span className="size-3 rounded-full bg-primary"></span>
+                    <span className="text-lg font-semibold tracking-tight">Upkeep</span>
                 </Link>
                 <div className="ml-auto flex items-center gap-2">
                     <button

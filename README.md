@@ -68,7 +68,15 @@ From the repository root:
 jac run web
 ```
 
-Then open http://localhost:8000. The web frontend is served there and the
+Then open http://localhost:8000 and sign up. The page has three tabs: **Today**
+(check off habits, log a workout, step through days), **Goals** (weekly goals
+and habit stats) and **Jobs** (a sortable application table). Light by default;
+the toggle in the top bar switches to a dark theme.
+
+After editing source files, restart `jac run web`: the dev server's file
+watcher does not reliably pick up changes.
+
+The web frontend is served on port 8000 and the
 server API on port 8001; both start together. Registration solves a small
 proof-of-work challenge and is rate limited (5 accounts per hour).
 

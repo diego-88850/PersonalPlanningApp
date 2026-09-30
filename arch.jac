@@ -9,6 +9,7 @@ impl import {
 
 impl import core {
     async_utils --> core.upkeep.registration { sleep }
+    utils --> core.site.planner.AuthForm | core.site.planner.GoalsTab | core.site.planner.JobsTab | core.site.planner.Planner | core.site.planner.TodayTab { cn }
     utils --> core.site.ui.Navbar { cn }
     utils --> core.site.ui.accordion { cn }
     utils --> core.site.ui.alert_dialog { cn }
@@ -45,8 +46,13 @@ impl import core.brand {
 
 impl import core.upkeep {
     dates --> core.upkeep.state { local_today, shift_day }
+    dates --> core.site.planner.GoalsTab { pretty_day }
+    dates --> core.site.planner.JobsTab { short_day }
+    dates --> core.site.planner.TodayTab { local_today, pretty_day }
     registration --> core.upkeep.session { register_with_challenge }
-    session --> core.upkeep.state { Session, useSession }
+    session --> core.site.planner.AuthForm | core.upkeep.state { Session }
+    session --> core.upkeep.state { useSession }
+    state --> core.site.planner.GoalsTab | core.site.planner.JobsTab | core.site.planner.TodayTab { UpkeepState }
     state --> core.site.planner.Planner | mobile.main { useUpkeep }
 }
 
@@ -62,13 +68,19 @@ impl import core.upkeep.native {
 impl import core.site.ui {
     Navbar --> core.site.ui.SiteShell { Navbar }
     SiteShell --> web.pages.layout { SiteShell }
+    button --> core.site.planner.AuthForm | core.site.planner.GoalsTab | core.site.planner.JobsTab | core.site.planner.Planner | core.site.planner.TodayTab { Button }
     button --> core.site.ui.Navbar { buttonVariants }
     button --> core.site.ui.NotFound { buttonVariants }
     button --> core.site.ui.alert_dialog { Button }
     button --> core.site.ui.carousel { Button }
     button --> core.site.ui.dialog { buttonVariants }
+    card --> core.site.planner.AuthForm | core.site.planner.JobsTab { Card, CardContent }
+    card --> core.site.planner.GoalsTab | core.site.planner.TodayTab { Card, CardContent, CardHeader, CardTitle }
+    badge --> core.site.planner.GoalsTab { Badge }
+    input --> core.site.planner.AuthForm | core.site.planner.GoalsTab | core.site.planner.JobsTab | core.site.planner.TodayTab { Input }
     label --> core.site.ui.field { Label }
     separator --> core.site.ui.field { Separator }
+    textarea --> core.site.planner.TodayTab { Textarea }
 }
 
 impl import cli.commands {
@@ -88,7 +100,8 @@ impl import cli.commands {
 impl import core {
     rules --> core.server { completion_pct, streaks, valid_day, week_so_far }
     validation --> core.server | core.upkeep.state { name_limit, valid_name }
-    validation --> core.server { goal_kinds, statuses }
+    validation --> core.server | core.site.planner.JobsTab { statuses }
+    validation --> core.server { goal_kinds }
     server --> cli.commands.plan {
         GoalView,
         HabitView,
@@ -103,6 +116,7 @@ impl import core {
         set_check
     }
     server --> cli.main { ping }
+    server --> core.site.planner.JobsTab { ApplicationView }
     server --> core.upkeep.state {
         ApplicationView,
         Result,
@@ -123,5 +137,9 @@ impl import core {
 }
 
 impl import core.site.planner {
+    AuthForm --> core.site.planner.Planner { AuthForm }
+    GoalsTab --> core.site.planner.Planner { GoalsTab }
+    JobsTab --> core.site.planner.Planner { JobsTab }
     Planner --> web.pages.index { Planner }
+    TodayTab --> core.site.planner.Planner { TodayTab }
 }

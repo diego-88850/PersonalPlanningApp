@@ -9,7 +9,7 @@ obj Theme {
 }
 
 def:pub useTheme -> Theme {
-    has dark: bool = __getLocalStorage("jac-theme") != "light";
+    has dark: bool = __getLocalStorage("jac-theme") == "dark";
     def changed(value: bool) {
         dark = value;
     }

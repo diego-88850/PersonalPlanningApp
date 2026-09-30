@@ -16,3 +16,18 @@ def:pub shift_day(day: str, delta: int) -> str {
         new(Date, int(parts[0]), int(parts[1]) - 1, int(parts[2]) + delta)
     );
 }
+
+def:pub parse_day(day: str) -> any {
+    parts = day.split("-");
+    return new(Date, int(parts[0]), int(parts[1]) - 1, int(parts[2]));
+}
+
+def:pub pretty_day(day: str) -> str {
+    return parse_day(day).toLocaleDateString(
+        "en-US", {"weekday": "long", "month": "long", "day": "numeric"}
+    );
+}
+
+def:pub short_day(day: str) -> str {
+    return parse_day(day).toLocaleDateString("en-US", {"month": "short", "day": "numeric"});
+}

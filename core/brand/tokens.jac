@@ -13,7 +13,8 @@ obj Colors {
         danger: str = "#ff5c5c",
         dangerSoft: str = "rgba(255,92,92,0.14)",
         field: str = "#262626",
-        scrim: str = "rgba(0,0,0,0.65)";
+        scrim: str = "rgba(0,0,0,0.65)",
+        success: str = "#8fb67c";
 }
 
 obj Spacing {
@@ -44,20 +45,37 @@ obj Fonts {
 }
 
 def:pub dark_palette -> Colors {
-    return Colors();
+    return Colors(
+        bg="#1e1814",
+        surface="#2a221c",
+        elevated="#362c24",
+        border="#4a3d33",
+        text="#f5ebdd",
+        muted="#b8a794",
+        accent="#e39468",
+        accentSoft="rgba(227,148,104,0.16)",
+        accentText="#1e1814",
+        danger="#f28b7d",
+        dangerSoft="rgba(242,139,125,0.16)",
+        field="#2a221c",
+        success="#8fb67c"
+    );
 }
 
 def:pub light_palette -> Colors {
     return Colors(
-        bg="#ffffff",
-        surface="#ffffff",
-        elevated="#f5f5f5",
-        border="#e5e5e5",
-        text="#171717",
-        muted="#737373",
-        accent="#ea580c",
-        field="#fafafa",
-        accentSoft="rgba(234,88,12,0.12)"
+        bg="#faf5ec",
+        surface="#fffcf6",
+        elevated="#f1e8d8",
+        border="#dccdb5",
+        text="#3a2e26",
+        muted="#7a6955",
+        accent="#b9532f",
+        accentSoft="rgba(185,83,47,0.12)",
+        danger="#b3261e",
+        dangerSoft="rgba(179,38,30,0.12)",
+        field="#fffcf6",
+        success="#5f8a4e"
     );
 }
 

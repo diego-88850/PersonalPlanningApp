@@ -13,6 +13,22 @@ def css(p: Colors) -> str {
         + p.accent
         + ";--primary-foreground:"
         + p.accentText
+        + ";--popover:"
+        + p.surface
+        + ";--popover-foreground:"
+        + p.text
+        + ";--secondary:"
+        + p.elevated
+        + ";--secondary-foreground:"
+        + p.text
+        + ";--accent:"
+        + p.elevated
+        + ";--accent-foreground:"
+        + p.text
+        + ";--ring:"
+        + p.accent
+        + ";--success:"
+        + p.success
         + ";--muted:"
         + p.elevated
         + ";--muted-foreground:"
@@ -20,7 +36,7 @@ def css(p: Colors) -> str {
         + ";--border:"
         + p.border
         + ";--input:"
-        + p.field
+        + p.border
         + ";--like:"
         + p.like
         + ";--reply:"
@@ -28,7 +44,7 @@ def css(p: Colors) -> str {
         + ";--destructive:"
         + p.danger
         + ";--radius:"
-        + str(radii().sm)
+        + str(radii().md)
         + "px;--spacing:"
         + str(spacing().xs)
         + "px;--font-sans:"

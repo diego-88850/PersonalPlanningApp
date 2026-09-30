@@ -2,10 +2,10 @@ import from "@jac/runtime" { Outlet }
 
 def init_theme {
     saved = localStorage.getItem("jac-theme");
-    if saved == "light" {
-        document.documentElement.classList.remove("dark");
-    } else {
+    if saved == "dark" {
         document.documentElement.classList.add("dark");
+    } else {
+        document.documentElement.classList.remove("dark");
     }
 }
 
