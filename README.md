@@ -52,10 +52,13 @@ phone and in the browser.
 ```bash
 git clone https://github.com/diego-88850/PersonalPlanningApp.git
 cd PersonalPlanningApp
-jac install          # Python and npm dependencies
+jac install --npm    # frontend dependencies (jac run also installs them on first start)
 ```
 
-No API keys or other configuration are needed.
+No API keys or other configuration are needed. On the machine this was built
+on, a plain `jac install` failed while creating a Python virtual environment
+(an error inside Jac's bundled Python); `jac install --npm` and everything
+else worked, and nothing in the project needs the Python-side install.
 
 ## Running the Web App and Server
 
