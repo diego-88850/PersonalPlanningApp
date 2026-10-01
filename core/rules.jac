@@ -1,6 +1,6 @@
 import datetime;
 
-def valid_day(day: str) -> bool {
+def:priv valid_day(day: str) -> bool {
     if len(day) != 10 {
         return False;
     }
@@ -12,7 +12,7 @@ def valid_day(day: str) -> bool {
     }
 }
 
-def week_so_far(day: str) -> list[str] {
+def:priv week_so_far(day: str) -> list[str] {
     end = datetime.date.fromisoformat(day);
     start = end - datetime.timedelta(days=end.weekday());
     return [
@@ -21,7 +21,7 @@ def week_so_far(day: str) -> list[str] {
     ];
 }
 
-def streaks(days: list[str], today: str) -> tuple[int, int] {
+def:priv streaks(days: list[str], today: str) -> tuple[int, int] {
     ordinals = sorted(set([datetime.date.fromisoformat(d).toordinal() for d in days]));
     best = 0;
     run = 0;
@@ -44,7 +44,7 @@ def streaks(days: list[str], today: str) -> tuple[int, int] {
     return (current, best);
 }
 
-def completion_pct(done: int, habits: int, days: int) -> int {
+def:priv completion_pct(done: int, habits: int, days: int) -> int {
     possible = habits * days;
     return min(100, done * 100 // possible) if possible > 0 else 0;
 }

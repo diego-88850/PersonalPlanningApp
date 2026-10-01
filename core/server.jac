@@ -91,6 +91,14 @@ def _owned(id: str) -> Habit | Workout | Goal | Application | None {
     return None;
 }
 
+def _drop_goals_for(habit_id: str) {
+    for g in [root -->][?:Goal] {
+        if g.habit_id == habit_id {
+            del g;
+        }
+    }
+}
+
 def _habit_view(h: Habit, day: str) -> HabitView {
     week = set(week_so_far(day));
     (current, longest) = streaks(h.days, day);
@@ -148,6 +156,7 @@ def:protect archive_habit(id: str) -> Result {
         return _fail("No such habit");
     }
     h.archived = True;
+    _drop_goals_for(id);
     return Result(id=id);
 }
 
@@ -181,6 +190,9 @@ def:protect log_workout(day: str, title: str, details: str = "") -> Result {
     if not valid_name(title) {
         return _fail(f"Workout title must be 1-{name_limit()} characters");
     }
+    if not valid_text(details) {
+        return _fail(f"Details must be at most {text_limit()} characters");
+    }
     w = root ++> Workout(day=day, title=title.strip(), details=details.strip());
     return Result(id=jid(w));
 }
@@ -201,6 +213,9 @@ def:protect add_application(
     if not valid_day(applied_on) {
         return _fail("Date applied must be YYYY-MM-DD");
     }
+    if not valid_text(notes) {
+        return _fail(f"Notes must be at most {text_limit()} characters");
+    }
     a = root ++> Application(
         company=company.strip(),
         position=position.strip(),
@@ -220,6 +235,9 @@ def:protect update_application(
     }
     if status and status not in statuses() {
         return _fail("Status must be one of: " + ", ".join(statuses()));
+    }
+    if notes is not None and not valid_text(notes) {
+        return _fail(f"Notes must be at most {text_limit()} characters");
     }
     if status {
         a.status = status;
@@ -281,6 +299,9 @@ def:protect delete_item(id: str) -> Result {
     n = _owned(id);
     if n is None {
         return _fail("Nothing with that id");
+    }
+    if isinstance(n, Habit) {
+        _drop_goals_for(id);
     }
     del n;
     return Result(id=id);

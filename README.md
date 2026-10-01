@@ -41,24 +41,21 @@ phone and in the browser.
 
 ## Prerequisites
 
-- Jac 0.37.23 (pinned in `jac.toml`)
-- Python TODO(verify) version
-- For mobile: TODO(verify) (e.g. Node.js plus an emulator or the Expo Go app)
-- Recommended: VS Code with the Jac extension
+- Jac 0.37.23 (pinned in `jac.toml`). The `jac` binary bundles its own Python
+  and Bun, so no separate Python or Node install is needed.
+- Mobile in a browser needs nothing else. Running it natively needs an
+  emulator or the Expo Go app on a phone.
+- Recommended: VS Code with the Jac extension.
 
 ## Setup
 
 ```bash
-git clone [your repo URL]
-cd [repo folder]
-jac install          # TODO(verify): the dependency install command
+git clone https://github.com/diego-88850/PersonalPlanningApp.git
+cd PersonalPlanningApp
+jac install          # Python and npm dependencies
 ```
 
-Optional configuration (TODO(verify): if you use AI features or API keys):
-
-```bash
-export [KEY_NAME]=your-key-here
-```
+No API keys or other configuration are needed.
 
 ## Running the Web App and Server
 
@@ -123,11 +120,30 @@ jac run cli -- today                                  # print today's plan and p
 ## Project Structure
 
 ```
-jac.toml     # project configuration (default app set for `jac run`)
-core/        # shared data models and server functions
-web/         # browser frontend
-mobile/      # mobile app
-cli/         # command-line interface
+jac.toml              # apps, dependencies, lint and test config
+arch.jac              # every import between project modules (wires) and layering rules
+core/
+  server.jac          # SERVER: nodes, result objs, all public functions
+  rules.jac           # pure date, streak and percentage logic (server only)
+  validation.jac      # limits and checks shared by server and clients
+  brand/              # warm design tokens shared by web and mobile
+  upkeep/             # client side: useUpkeep hook, session, dates
+    native/           # mobile screens, components, theme, icons
+  site/
+    planner/          # web screens: Planner, TodayTab, GoalsTab, JobsTab, AuthForm
+    ui/               # shadcn primitives (button, card, input, textarea, badge) and shell
+web/                  # web app entry and file-based routes
+mobile/               # mobile app entry
+cli/                  # command-line interface (main.jac, commands/)
+*.test.jac            # tests sit next to the module they test
 ```
 
-(TODO(verify): match this to the real layout after scaffolding.)
+## Testing
+
+```bash
+jac check     # type-check and lint every app
+jac test      # unit tests: rules, validation, server functions, CLI
+```
+
+The server tests call the functions directly; the CLI tests need no server.
+Client screens are checked by hand in the browser (see above).

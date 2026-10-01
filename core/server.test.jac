@@ -151,3 +151,28 @@ test "get_today combines habits, workouts and goals for one day" {
         delete_item(i);
     }
 }
+
+test "archiving or deleting a habit removes its goals" {
+    h1 = add_habit("goal owner one").id;
+    h2 = add_habit("goal owner two").id;
+    g1 = set_goal("one 2x", "habit", 2, h1).id;
+    g2 = set_goal("two 2x", "habit", 2, h2).id;
+    keep = set_goal("lift", "workout", 1).id;
+    assert archive_habit(h1).ok;
+    assert delete_item(h2).ok;
+    ids = ids_of(list_goals("2099-06-03"));
+    assert g1 not in ids and g2 not in ids;
+    assert keep in ids;
+    delete_item(keep);
+    delete_item(h1);
+}
+
+test "free text is capped" {
+    too_long = "x" * 2001;
+    assert not log_workout("2099-06-01", "legs", too_long).ok;
+    assert not add_application("Acme", "Intern", "2099-06-01", too_long).ok;
+    aid = add_application("Cap", "Intern", "2099-06-01").id;
+    assert not update_application(aid, notes=too_long).ok;
+    assert update_application(aid, notes="x" * 2000).ok;
+    delete_item(aid);
+}

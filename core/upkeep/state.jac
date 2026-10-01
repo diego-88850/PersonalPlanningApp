@@ -53,7 +53,7 @@ def:pub useUpkeep -> UpkeepState {
         loading: bool = False,
         error: str = "";
 
-    async def refresh -> None {
+    async def refresh {
         fresh_today: Today | None = None;
         fresh_workouts: list[WorkoutView] = [];
         fresh_applications: list[ApplicationView] = [];
@@ -82,7 +82,7 @@ def:pub useUpkeep -> UpkeepState {
         return True;
     }
 
-    async def toggleHabit(habitId: str, done: bool) -> None {
+    async def toggleHabit(habitId: str, done: bool) {
         res: Result | None = None;
         try {
             res = await set_check(habitId, day, done);
@@ -108,7 +108,7 @@ def:pub useUpkeep -> UpkeepState {
         return ok;
     }
 
-    async def archiveHabit(habitId: str) -> None {
+    async def archiveHabit(habitId: str) {
         res: Result | None = None;
         try {
             res = await archive_habit(habitId);
@@ -150,7 +150,7 @@ def:pub useUpkeep -> UpkeepState {
         return ok;
     }
 
-    async def setApplicationStatus(appId: str, status: str) -> None {
+    async def setApplicationStatus(appId: str, status: str) {
         res: Result | None = None;
         try {
             res = await update_application(appId, status);
@@ -176,7 +176,7 @@ def:pub useUpkeep -> UpkeepState {
         return ok;
     }
 
-    async def removeItem(itemId: str) -> None {
+    async def removeItem(itemId: str) {
         res: Result | None = None;
         try {
             res = await delete_item(itemId);

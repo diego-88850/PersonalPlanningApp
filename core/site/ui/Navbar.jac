@@ -1,7 +1,6 @@
 import from "@jac/runtime" { Link }
 
-import from "@hugeicons/react" { HugeiconsIcon }
-import from "@hugeicons/core-free-icons" { Moon01Icon, Sun01Icon }
+import from "lucide-react" { Moon, Sun }
 
 def:pub Navbar -> JsxElement {
     theme = useTheme();
@@ -31,17 +30,9 @@ def:pub Navbar -> JsxElement {
                         )}
                     >
                         {if dark {
-                            <HugeiconsIcon
-                                icon={Sun01Icon}
-                                strokeWidth={2}
-                                className="size-4"
-                            />
+                            <Sun className="size-4"/>
                         } else {
-                            <HugeiconsIcon
-                                icon={Moon01Icon}
-                                strokeWidth={2}
-                                className="size-4"
-                            />
+                            <Moon className="size-4"/>
                         } }
                     </button>
                 </div>
