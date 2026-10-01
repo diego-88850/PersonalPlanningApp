@@ -7,11 +7,9 @@ obj Tab {
 }
 
 glob TABS: list[Tab] = [
-         Tab(key="feed", icon="home", label="Home"),
-         Tab(key="scores", icon="explore", label="Scores"),
-         Tab(key="explore", icon="explore", label="Explore"),
-         Tab(key="channels", icon="hash", label="Channels"),
-         Tab(key="profile", icon="user", label="Profile")
+         Tab(key="today", icon="today", label="Today"),
+         Tab(key="jobs", icon="jobs", label="Jobs"),
+         Tab(key="progress", icon="progress", label="Progress")
      ];
 
 def:pub TabBar(activeTab: str, onNavigate: Callable[[str], None]) -> JsxElement {
@@ -19,7 +17,7 @@ def:pub TabBar(activeTab: str, onNavigate: Callable[[str], None]) -> JsxElement 
     C = theme.colors;
     styles = makeStyles(C);
     <View style={styles.tabBar}>
-        {for t in TABS {
+        {[
             <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={t.label}
@@ -34,13 +32,11 @@ def:pub TabBar(activeTab: str, onNavigate: Callable[[str], None]) -> JsxElement 
                     color={C.accent if activeTab == t.key else C.muted}
                 />
                 <Text
-                    style={styles.tabLabelActive
-                        if activeTab == t.key
-                        else styles.tabLabel}
+                    style={styles.tabLabelOn if activeTab == t.key else styles.tabLabel}
                 >
                     {t.label}
                 </Text>
-            </Pressable>
-        }}
+            </Pressable> for t in TABS
+        ]}
     </View>
 }

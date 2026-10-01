@@ -82,15 +82,17 @@ proof-of-work challenge and is rate limited (5 accounts per hour).
 
 ## Using the Mobile App
 
-1. Make sure the server above is running.
-2. TODO(verify): command to launch the mobile app, for example:
+The mobile app is written in Jac (no Swift or Kotlin). To try it in a browser:
+
 ```bash
-   cd mobile && jac start --client android   # placeholder
+jac run --dev --platform web mobile
 ```
-3. TODO(verify): how the phone or emulator finds the server (same Wi-Fi and
-   the computer's local IP address, or an emulator alias).
-4. Use the tabs to check in on habits, log a workout, update an application's
-   status, and view weekly progress.
+
+Open http://localhost:8000. It starts its own backend, so you do not need
+`jac run web`. Sign in, then use the tabs: **Today** (check off habits, log a
+workout), **Jobs** (tap a status to update it) and **Progress** (read-only
+weekly progress). `jac run --dev mobile` runs it natively through Expo; a
+physical device needs a reachable HTTPS backend. See `mobile/README.md`.
 
 ## Using the CLI
 

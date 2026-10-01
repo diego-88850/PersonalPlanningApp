@@ -22,12 +22,36 @@ def:pub parse_day(day: str) -> any {
     return new(Date, int(parts[0]), int(parts[1]) - 1, int(parts[2]));
 }
 
+glob WEEKDAYS: list[str] = [
+         "Sunday",
+         "Monday",
+         "Tuesday",
+         "Wednesday",
+         "Thursday",
+         "Friday",
+         "Saturday"
+     ],
+     MONTHS: list[str] = [
+         "January",
+         "February",
+         "March",
+         "April",
+         "May",
+         "June",
+         "July",
+         "August",
+         "September",
+         "October",
+         "November",
+         "December"
+     ];
+
 def:pub pretty_day(day: str) -> str {
-    return parse_day(day).toLocaleDateString(
-        "en-US", {"weekday": "long", "month": "long", "day": "numeric"}
-    );
+    d = parse_day(day);
+    return WEEKDAYS[d.getDay()] + ", " + MONTHS[d.getMonth()] + " " + str(d.getDate());
 }
 
 def:pub short_day(day: str) -> str {
-    return parse_day(day).toLocaleDateString("en-US", {"month": "short", "day": "numeric"});
+    d = parse_day(day);
+    return MONTHS[d.getMonth()][0:3] + " " + str(d.getDate());
 }
