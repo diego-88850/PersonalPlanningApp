@@ -80,28 +80,29 @@ not reliably pick up changes.
 
 ## Using the Mobile App
 
-The mobile app is written in Jac (`@jac/mobui`), with no Swift or Kotlin. It
-reads and writes the same data as the web app. To try it in a browser, in a
-second terminal (leave `jac run` going):
+The mobile app is written in Jac (`@jac/mobui`), with no Swift or Kotlin, and
+it reads and writes the same saved data as the web app. To try it in a
+browser, first stop `jac run` (Ctrl-C): the web app and the mobile preview
+both use port 8000 and share one build folder, so run one at a time. Then:
 
 ```bash
-jac build mobile --platform web                             # once per checkout
-jac run --dev --platform web --port 8100 --api-port 8101 mobile
+jac build mobile --platform web       # once per checkout
+jac run --dev --platform web mobile
 ```
 
-Open http://localhost:8100 and sign in with the same account. The tabs are
+Open http://localhost:8000 and sign in with the same account. The tabs are
 **Today** (check off habits, log a workout), **Jobs** (tap a status chip to
 update an application) and **Progress** (read-only weekly progress). Habits,
 applications and goals are created on the web app or in the CLI; the mobile
-screens show them. Changes made on the phone show up in the web app and CLI
-and the other way around (use the refresh button in the mobile header to pull
-in changes made elsewhere).
+screens show them. The CLI works the same while the mobile preview is running
+(the server API is on port 8001 in both cases). Run `jac run` again to go back
+to the web app: everything you did in the mobile app is saved and shows up
+there.
 
-If you run mobile on its own, `jac run --dev --platform web mobile` serves it
-on port 8000 with its own API on 8001. `jac run --dev mobile` runs it natively
-through Expo (Expo Go or a simulator) using the same Jac code; I tested the
-browser preview, not a native device, and a physical phone needs a backend it
-can reach over HTTPS rather than localhost. See `mobile/README.md`.
+`jac run --dev mobile` runs it natively through Expo (Expo Go or a simulator)
+using the same Jac code; I tested the browser preview, not a native device,
+and a physical phone needs a backend it can reach over HTTPS rather than
+localhost. See `mobile/README.md`.
 
 ## Using the CLI
 
@@ -130,8 +131,9 @@ for a password and save a token under `~/.upkeep`; `logout` removes it.
    counted from what you logged.
 4. On the Jobs tab, add an application and change its status; click a column
    header to sort.
-5. Start the mobile preview (above), sign in, and check the same habit or tap a
-   status chip. Run `jac run cli -- today` to see the change.
+5. Stop `jac run`, start the mobile preview (above), sign in, check a habit and
+   tap a status chip. Run `jac run cli -- today` to see the check-in, then
+   `jac run` again: the web app shows both changes.
 
 ## What Makes This Project Stand Out
 

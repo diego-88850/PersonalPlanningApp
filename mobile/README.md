@@ -9,18 +9,19 @@ Scope (as in the README): check off habits, log a workout, update a job's
 status, and read weekly progress. Adding habits, applications and goals is done
 on the web app or the CLI.
 
+Stop `jac run` first: the web app and the browser preview both use port 8000
+and share one build folder, so run one at a time. Both read and write the same
+saved data, and the CLI works against either (API on port 8001).
+
 ```bash
 jac build mobile --platform web       # once per checkout: the dev preview needs this first
-jac run --dev --platform web --port 8100 --api-port 8101 mobile   # beside `jac run` (web on 8000)
-jac run --dev --platform web mobile   # on its own: app on 8000, API on 8001
+jac run --dev --platform web mobile   # the same screens in a browser (react-native-web)
 jac run --dev mobile                  # native through Expo; first run scaffolds .jac/mobile-rn/
 ```
 
 Without the one-time build, the preview page stays blank on a fresh checkout
 (the dev server never emits `.jac/client/mobile/compiled`; seen on jac 0.37.23).
-The preview process serves its own copy of the API, but it reads and writes the
-same saved data as `jac run`, so both show the same habits, workouts and
-applications (checked in both directions). A physical device needs a
+Run `jac run` again to return to the web app. A physical device needs a
 reachable HTTPS backend, not localhost.
 
 ## Layout
