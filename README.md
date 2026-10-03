@@ -41,8 +41,7 @@ browser and the mobile app, and the other way around (tested across all three).
 
 ## Prerequisites
 
-- Jac 0.37.23 (pinned in `jac.toml`). The `jac` binary bundles its own Python
-  and Bun, so no separate Python or Node install is needed.
+- Jac 0.37.23 installed (the version pinned in `jac.toml`).
 - Mobile in a browser needs nothing else. Running it natively needs an
   emulator or the Expo Go app on a phone.
 - Recommended: VS Code with the Jac extension.
