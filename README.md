@@ -36,8 +36,8 @@ data.
 | Mobile app | Daily use on the go. | Check-in, log a workout, update job status, view weekly progress (read-only) |
 | Command-line interface (CLI) | Fastest way to capture something. | Add an application, log a workout, check off an item, print today's plan |
 
-Because of this, something logged in the terminal appears immediately on the
-phone and in the browser.
+Because of this, something logged in the terminal appears immediately in the
+browser and the mobile app, and the other way around (tested across all three).
 
 ## Prerequisites
 
@@ -65,39 +65,50 @@ else worked, and nothing in the project needs the Python-side install.
 From the repository root:
 
 ```bash
-jac run web
+jac run
 ```
 
-Then open http://localhost:8000 and sign up. The page has three tabs: **Today**
-(check off habits, log a workout, step through days), **Goals** (weekly goals
-and habit stats) and **Jobs** (a sortable application table). Light by default;
-the toggle in the top bar switches to a dark theme.
+`jac.toml` sets the default app to `web`, so this starts the web frontend and
+the server together: open http://localhost:8000 (the server API is on port
+8001). Sign up, then use the three tabs: **Today** (check off habits, log a
+workout, step through days), **Goals** (weekly goals and habit stats) and
+**Jobs** (a sortable application table). It is light by default; the toggle in
+the top bar switches to a dark theme. Data is saved on disk, so it is still
+there after a restart.
 
-After editing source files, restart `jac run web`: the dev server's file
-watcher does not reliably pick up changes.
-
-The web frontend is served on port 8000 and the
-server API on port 8001; both start together. Registration solves a small
-proof-of-work challenge and is rate limited (5 accounts per hour).
+Registration solves a small proof-of-work challenge in the browser and is rate
+limited (5 accounts per hour), so reuse one account while testing. After
+editing source files, restart `jac run`: the dev server's file watcher does
+not reliably pick up changes.
 
 ## Using the Mobile App
 
-The mobile app is written in Jac (no Swift or Kotlin). To try it in a browser:
+The mobile app is written in Jac (`@jac/mobui`), with no Swift or Kotlin. It
+reads and writes the same data as the web app. To try it in a browser, in a
+second terminal (leave `jac run` going):
 
 ```bash
-jac build mobile --platform web       # once per checkout
-jac run --dev --platform web mobile
+jac build mobile --platform web                             # once per checkout
+jac run --dev --platform web --port 8100 --api-port 8101 mobile
 ```
 
-Open http://localhost:8000. It starts its own backend, so you do not need
-`jac run web`. Sign in, then use the tabs: **Today** (check off habits, log a
-workout), **Jobs** (tap a status to update it) and **Progress** (read-only
-weekly progress). `jac run --dev mobile` runs it natively through Expo; a
-physical device needs a reachable HTTPS backend. See `mobile/README.md`.
+Open http://localhost:8100 and sign in with the same account. The tabs are
+**Today** (check off habits, log a workout), **Jobs** (tap a status chip to
+update an application) and **Progress** (read-only weekly progress). Habits,
+applications and goals are created on the web app or in the CLI; the mobile
+screens show them. Changes made on the phone show up in the web app and CLI
+and the other way around (use the refresh button in the mobile header to pull
+in changes made elsewhere).
+
+If you run mobile on its own, `jac run --dev --platform web mobile` serves it
+on port 8000 with its own API on 8001. `jac run --dev mobile` runs it natively
+through Expo (Expo Go or a simulator) using the same Jac code; I tested the
+browser preview, not a native device, and a physical phone needs a backend it
+can reach over HTTPS rather than localhost. See `mobile/README.md`.
 
 ## Using the CLI
 
-With the server running (see `cli/README.md` for details):
+With `jac run` going in another terminal (see `cli/README.md` for details):
 
 ```bash
 jac run cli -- register diego                         # first time only; later: login diego
@@ -107,6 +118,23 @@ jac run cli -- log-workout "Legs" --details "squat 3x5"
 jac run cli -- add-job "Company" "Position"           # add an application (status: Applied)
 jac run cli -- today                                  # print today's plan and progress
 ```
+
+Everything after `--` is the CLI's own arguments. `register` and `login` ask
+for a password and save a token under `~/.upkeep`; `logout` removes it.
+
+## A Two-Minute Tour
+
+1. `jac run`, open http://localhost:8000 and sign up.
+2. In a terminal: `jac run cli -- login <you>`, then `jac run cli -- add-habit meds`
+   and `jac run cli -- log-workout "Legs" --details "squat 3x5"`. Refresh the
+   web page: the habit and workout are already there.
+3. On the Today tab, check off `meds`. On the Goals tab, add "a habit: meds, 3
+   times a week" and "workouts, 3 times a week": their progress is already
+   counted from what you logged.
+4. On the Jobs tab, add an application and change its status; click a column
+   header to sort.
+5. Start the mobile preview (above), sign in, and check the same habit or tap a
+   status chip. Run `jac run cli -- today` to see the change.
 
 ## What Makes This Project Stand Out
 

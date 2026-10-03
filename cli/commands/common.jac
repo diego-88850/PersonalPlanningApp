@@ -13,7 +13,7 @@ glob EXIT_OK: int = 0,
      EXIT_TIMEOUT: int = 4,
      EXIT_REJECTED: int = 5;
 
-glob START_HINT: str = "hint: start the server with `jac run web`";
+glob START_HINT: str = "hint: start the server with `jac run`";
 
 def warn(text: str) {
     sys.stderr.write(text + "\n");

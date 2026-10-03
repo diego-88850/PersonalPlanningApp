@@ -5,7 +5,7 @@ function on the server (`core/server.jac`), so the CLI holds no planning logic.
 Run it as `jac run cli -- <command>`; everything after `--` is the CLI's argv.
 
 ```bash
-jac run web                          # terminal 1: start the server (port 8001)
+jac run                              # terminal 1: start the server (API on port 8001)
 jac run cli -- register diego        # terminal 2: create an account and sign in
 jac run cli -- add-habit meds
 jac run cli -- check meds            # a unique prefix works: `check me`
