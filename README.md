@@ -85,6 +85,7 @@ proof-of-work challenge and is rate limited (5 accounts per hour).
 The mobile app is written in Jac (no Swift or Kotlin). To try it in a browser:
 
 ```bash
+jac build mobile --platform web       # once per checkout
 jac run --dev --platform web mobile
 ```
 

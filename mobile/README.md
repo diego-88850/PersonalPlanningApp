@@ -10,11 +10,14 @@ status, and read weekly progress. Adding habits, applications and goals is done
 on the web app or the CLI.
 
 ```bash
+jac build mobile --platform web       # once per checkout: the dev preview needs this first
 jac run --dev --platform web mobile   # the same screens in a browser (react-native-web)
 jac run --dev mobile                  # native through Expo; first run scaffolds .jac/mobile-rn/
 jac build mobile --platform web       # browser bundle
 ```
 
+Without the one-time build, the preview page stays blank on a fresh checkout
+(the dev server never emits `.jac/client/mobile/compiled`; seen on jac 0.37.23).
 The browser preview starts its own backend (App on :8000, API on :8001), so no
 other server is needed. A physical device needs a reachable HTTPS backend, not
 localhost.

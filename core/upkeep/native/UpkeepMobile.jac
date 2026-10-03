@@ -5,7 +5,8 @@ import from "@jac/mobui" {
     StatusBar,
     ActivityIndicator,
     KeyboardAvoidingView,
-    Platform
+    Platform,
+    useWindowDimensions
 }
 
 glob TAB_TITLES: dict[str, str] = {"today": "Today", "jobs": "Jobs", "progress": "Progress"};
@@ -15,6 +16,7 @@ def:pub UpkeepMobile -> JsxElement {
     C = theme.colors;
     styles = makeStyles(C);
     model = useUpkeep();
+    viewport = useWindowDimensions();
     has tab: str = "today";
 
     if model.session.checking {
@@ -27,7 +29,7 @@ def:pub UpkeepMobile -> JsxElement {
     if not model.session.loggedIn {
         return
             <KeyboardAvoidingView
-                style={styles.root}
+                style={[styles.root, {"height": viewport.height}]}
                 behavior={"padding" if Platform.OS == "ios" else "height"}
             >
                 <StatusBar
@@ -39,7 +41,7 @@ def:pub UpkeepMobile -> JsxElement {
     }
 
     <KeyboardAvoidingView
-        style={styles.root}
+        style={[styles.root, {"height": viewport.height}]}
         behavior={"padding" if Platform.OS == "ios" else "height"}
     >
         <StatusBar
